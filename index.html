@@ -31,9 +31,12 @@
     
     
     <script type="text/javascript">
+    var database = firebase.database();
     var clicks = 0;
     function onClick() {
-        clicks += 1;
+        var totalClicks = firebase.database().ref('/clicks');
+        clicks = totalClicks + 1;
+        firebase.database().ref('/clicks').set();
         document.getElementById("clicks").innerHTML = clicks;
     };
     </script>
