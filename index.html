@@ -4,6 +4,7 @@
 </head>
 
 <body>
+    <h1 id = "BigOne"></h1>
    
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
@@ -41,6 +42,11 @@
         click += 1;
         firebase.database().ref().child('clicks').set(click);
         document.getElementById("clicks").innerHTML = click;
+
+
+        var BigOne = document.getElementById("BigOne");
+        var dbRef = firebase.database().ref().child("clicks");
+        dbRef.on('value', snap => BigOne.innerText = snap.val());
     };
     </script>
     <button type="button" onClick="onClick()">Click me</button>
