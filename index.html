@@ -1,56 +1,61 @@
 <html>
-<head>
-    <title>Space Clicker</title>
-</head>
+    <head>
+        <title>Space Clicker</title>
+    </head>
 
-<body>
-    <h1 id = "BigOne"></h1>
-   
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <body>
+       
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
-    
-    <!-- Database -->
-    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+        
+        <!-- Database -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyB_6B-qnFaeXwiHETPElcYifZuJzfRD-Y4",
-        authDomain: "plol-585c5.firebaseapp.com",
-        databaseURL: "https://plol-585c5.firebaseio.com",
-        projectId: "plol-585c5",
-        storageBucket: "plol-585c5.appspot.com",
-        messagingSenderId: "559031622352",
-        appId: "1:559031622352:web:3532d965ca5024b6ac5cd5",
-        measurementId: "G-PJ55RF4MY9"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-    </script>
-    
-    
-    <script type="text/javascript">
-    var database = firebase.database();
-    var click = 0;
-    function onClick() {
-        var totalClicks = firebase.database().ref('clicks').set(click);
-        click += 1;
-        firebase.database().ref().child('clicks').set(click);
-        document.getElementById("clicks").innerHTML = click;
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyB_6B-qnFaeXwiHETPElcYifZuJzfRD-Y4",
+            authDomain: "plol-585c5.firebaseapp.com",
+            databaseURL: "https://plol-585c5.firebaseio.com",
+            projectId: "plol-585c5",
+            storageBucket: "plol-585c5.appspot.com",
+            messagingSenderId: "559031622352",
+            appId: "1:559031622352:web:3532d965ca5024b6ac5cd5",
+            measurementId: "G-PJ55RF4MY9"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+        </script>
+        
+        
 
 
-        var BigOne = document.getElementById("BigOne");
-        var dbRef = firebase.database().ref().child("clicks");
-        dbRef.on('value', snap => BigOne.innerText = snap.val());
-    };
-    </script>
-    <button type="button" onClick="onClick()">Click me</button>
-    <p>Clicks: <a id="clicks">0</a></p>
+        <script type="text/javascript">
+        var database = firebase.database();
 
-</body>
+
+        var totalClicks = firebase.database().ref('clicks').once('value').then(function(snapshot) {
+                var click = snapshot.val() 
+            });
+
+        function onClick() {
+            var totalClicks = firebase.database().ref('clicks').once('value').then(function(snapshot) {
+                click = snapshot.val() + 1 
+            });
+
+            //alert(click);
+            firebase.database().ref().child('clicks').set(click);
+            document.getElementById("clicks").innerHTML = click;
+        };
+        </script>
+
+        <button type="button" onClick="onClick()">Click me</button>
+        <p>Clicks: <a id="clicks">0</a></p>
+
+    </body>
 </html>
