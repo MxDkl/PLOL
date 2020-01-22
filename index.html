@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Space Clicker</title>
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
@@ -39,27 +41,17 @@
         var database = firebase.database();
         var click;
 
-        
-
         function onClick() {
-            //click is equal in the numbers stored in the database
-
-            var totalClicks = firebase.database().ref('clicks').once('value').then(function(snapshot) {
-                
-                console.log(snapshot.val());
-                //click = snapshot.val()+1 ; 
-                 firebase.database().ref().child('clicks').set(snapshot.val()+1);
-                document.getElementById("clicks").innerHTML = snapshot.val()+1;
-            
+            var totalClicks = database.ref('clicks').once('value').then(function(snapshot) {
+                click = snapshot.val() + 1;
+                console.log(click);
+                database.ref().child("clicks").set(click);
+                document.getElementById("num").innerHTML = click;
             });
-
-            //sends the number of clicks to the database
-           
         };
         </script>
 
-        <button type="button" onClick="onClick()">Click me</button>
-        <p>Clicks: <a id="clicks"></a></p>
+        <p class="button" onClick="onClick()">Clicks: <a id="num">0</a></p>
 
     </body>
 </html>
