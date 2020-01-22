@@ -42,7 +42,7 @@
         var click;
         
         function onClick() {
-            var totalClicks = database.ref('clicks').once('value').then(function(snapshot) {
+            var totalClicks = database.ref('clicks').on('value').then(function(snapshot) {
                 click = snapshot.val() + 1;
                 console.log(click);
                 database.ref().child("clicks").set(click);
@@ -50,8 +50,7 @@
             });
         };
        
-        var dbRef = firebase.database().ref().child("clicks");
-        dbRef.on('value', snap => num.innerText = snap.val());
+    
         </script>
 
         <p class="button" onClick="onClick()">Clicks: <a id="num">-</a></p>
