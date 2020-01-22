@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,7 +7,6 @@
     </head>
 
     <body>
-        <h1 id = "BigOne"></h1>
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
 
@@ -35,25 +35,27 @@
         </script>
         
         
-
-
         <script type="text/javascript">
         var database = firebase.database();
         var click;
         
         function onClick() {
-            var totalClicks = database.ref('clicks').on('value').then(function(snapshot) {
+            //alert(hello");
+            var totalClicks = database.ref('clicks').once('value').then(function(snapshot) {
                 click = snapshot.val() + 1;
                 console.log(click);
                 database.ref().child("clicks").set(click);
                 document.getElementById("num").innerHTML = click;
             });
         };
-       
-    
+        var dbRef = firebase.database().ref().child("clicks");  
+        dbRef.on('value', snap => num.innerText = snap.val());
         </script>
 
-        <p class="button" onClick="onClick()">Clicks: <a id="num">-</a></p>
+        <div style="text-align: center;">
+            <button onClick="onClick()">Click</button>
+            <p class="text">Clicks: <a id="num">-</a></p>
+        </div>
 
     </body>
 </html>
