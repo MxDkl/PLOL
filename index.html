@@ -37,25 +37,29 @@
 
         <script type="text/javascript">
         var database = firebase.database();
+        var click;
 
-
-        var totalClicks = firebase.database().ref('clicks').once('value').then(function(snapshot) {
-                var click = snapshot.val() 
-            });
+        
 
         function onClick() {
+            //click is equal in the numbers stored in the database
+
             var totalClicks = firebase.database().ref('clicks').once('value').then(function(snapshot) {
-                click = snapshot.val() + 1 
+                
+                console.log(snapshot.val());
+                //click = snapshot.val()+1 ; 
+                 firebase.database().ref().child('clicks').set(snapshot.val()+1);
+                document.getElementById("clicks").innerHTML = snapshot.val()+1;
+            
             });
 
-            //alert(click);
-            firebase.database().ref().child('clicks').set(click);
-            document.getElementById("clicks").innerHTML = click;
+            //sends the number of clicks to the database
+           
         };
         </script>
 
         <button type="button" onClick="onClick()">Click me</button>
-        <p>Clicks: <a id="clicks">0</a></p>
+        <p>Clicks: <a id="clicks"></a></p>
 
     </body>
 </html>
