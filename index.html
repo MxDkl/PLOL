@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>pLOL</title>
+        <title>Space Clicker</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-       
+        <h1 id = "BigOne"></h1>
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
 
@@ -40,7 +40,7 @@
         <script type="text/javascript">
         var database = firebase.database();
         var click;
-
+        
         function onClick() {
             var totalClicks = database.ref('clicks').once('value').then(function(snapshot) {
                 click = snapshot.val() + 1;
@@ -49,6 +49,9 @@
                 document.getElementById("num").innerHTML = click;
             });
         };
+       
+        var dbRef = firebase.database().ref().child("clicks");
+        dbRef.on('value', snap => num.innerText = snap.val());
         </script>
 
         <p class="button" onClick="onClick()">Clicks: <a id="num">-</a></p>
