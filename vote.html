@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pLOL vote</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body onLoad="refresh()">
+        <h1>Who is the funniest?</h1>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+        
+        <!-- Database -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+        <script>
+
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyB_6B-qnFaeXwiHETPElcYifZuJzfRD-Y4",
+            authDomain: "plol-585c5.firebaseapp.com",
+            databaseURL: "https://plol-585c5.firebaseio.com",
+            projectId: "plol-585c5",
+            storageBucket: "plol-585c5.appspot.com",
+            messagingSenderId: "559031622352",
+            appId: "1:559031622352:web:3532d965ca5024b6ac5cd5",
+            measurementId: "G-PJ55RF4MY9"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+        </script>
+        
+        
+        <script type="text/javascript">
+        var database = firebase.database();
+        var newData;
+        
+
+        function addName(name){
+            var a = database.ref('poll').once('value').then(function(snapshot) {
+                newData = snapshot.val() + "," + name;
+                console.log(newData);
+                database.ref().child("poll").set(newData);
+            });
+            refresh()
+        }
+
+        function refresh() {
+            var btns = ["btn1", "btn2", "btn3"];
+            var a = database.ref('poll').once('value').then(function(snapshot) {
+                //console.log(snapshot.val(), snapshot.val().split(","),snapshot.val().split(",").sort());
+                var list = snapshot.val().split(",").sort();
+                //console.log(list);
+
+                var nameCounter = {};
+                var i;
+                for (i = 0; i < list.length; i++) {
+                    //console.log(list[i]);
+                    if (nameCounter[list[i]] >= 1){
+                        nameCounter[list[i]] += 1;
+                    }
+                    else{
+                        nameCounter[list[i]] = 1;
+                    }
+                    //console.log(nameCounter[list[i]])
+                }
+               // console.log(nameCounter);
+                //console.log(Object.keys(nameCounter));
+                //console.log(btns);
+
+                for (i = 0; i < btns.length; i++) {
+                    var holder = nameCounter;
+                    var crntname = Object.keys(holder)[Math.floor((Math.random() * Object.keys(holder).length-1)+1)];
+                    //console.log(i, btns[i], crntname, holder);
+                    delete holder[crntname];
+
+                    var crntbtn = document.getElementById(btns[i]);
+                    //console.log(crntbtn, "button");
+                    crntbtn.onClick = function (){alert("foo");};
+                    crntbtn.innerText = crntname;
+                }
+            });
+        }
+
+        </script>
+
+        <div style="text-align: center;">
+            <button id="btn1" class="cool" onClick="x">-</button>
+            <button id="btn2" class="cool" onClick="x">-</button>
+            <button id="btn3" class="cool" onClick="x">-</button>
+        </div>
+        <div style="text-align: center;">
+        <button class="cool" onClick="refresh()">Refresh</button>
+        <button class="cool"> <a href="https://google.com">Check Polls</a> </button> 
+        </div>
+
+
+    </body>
+</html>
