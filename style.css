@@ -9,7 +9,7 @@ p.text {
 }
 
 
-button {
+button.cool {
   border-color: #4CAF50;
   color: green;
   border: 8px solid black;
@@ -20,7 +20,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button.cool:hover {
   background-color: #0080ff;
   color: white;
  }
