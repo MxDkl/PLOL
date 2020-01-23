@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Space Clicker</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <h1>Who is the funniest?</h1>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+        
+        <!-- Database -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+        <script>
+
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyB_6B-qnFaeXwiHETPElcYifZuJzfRD-Y4",
+            authDomain: "plol-585c5.firebaseapp.com",
+            databaseURL: "https://plol-585c5.firebaseio.com",
+            projectId: "plol-585c5",
+            storageBucket: "plol-585c5.appspot.com",
+            messagingSenderId: "559031622352",
+            appId: "1:559031622352:web:3532d965ca5024b6ac5cd5",
+            measurementId: "G-PJ55RF4MY9"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+        </script>
+        
+        
+        <script type="text/javascript">
+            var names = ["lolo", "max", "max", "lolo"];
+            var maxCounter = 0;
+            var loloCounter = 0;
+            names.push("Index 1");
+            names.push("car");
+            names.forEach(myFunction);
+            function myFunction(item){
+                if (item == "max"){
+                   maxCounter +=1
+                }
+                 if (item == "lolo"){
+                   loloCounter +=1
+                }
+
+            }
+            console.log("Lolo", loloCounter);
+            console.log("Max", maxCounter);
+
+
+
+        var database = firebase.database();
+        var click;
+        
+        function onClick() {
+            //alert(hello");
+            var totalClicks = database.ref('clicks').once('value').then(function(snapshot) {
+                click = snapshot.val() + 1;
+                console.log(click);
+                database.ref().child("clicks").set(click);
+                document.getElementById("num").innerHTML = click;
+            });
+        };
+
+        function onMax(){
+            var totalClicks = database.ref('poll').once('value').then(function(snapshot) {
+                click = snapshot.val() + ",max";
+                console.log(click);
+                database.ref().child("poll").set(click);
+                document.getElementById("num").innerHTML = click;
+            });
+        }
+
+        function onLolo(){
+            var totalClicks = database.ref('poll').once('value').then(function(snapshot) {
+                click = snapshot.val() + ",Lolo";
+                console.log(click);
+                database.ref().child("poll").set(click);
+                document.getElementById("num").innerHTML = click;
+            });
+        }
+
+        var dbRef = firebase.database().ref().child("clicks");  
+        dbRef.on('value', snap => num.innerText = snap.val());
+        </script>
+
+        <div style="text-align: center;">
+            <button class = "max"onClick="onMax()">Max</button>
+            <button class = "lolo"onClick="onLolo()">Lolo</button>
+            <p class="text">Clicks: <a id="num">-</a></p>
+
+        </div>
+
+    </body>
+</html>
