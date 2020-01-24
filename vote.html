@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pLOL vote</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body onLoad="refresh()">
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+        
+        <!-- Database -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+        <!-- firebase innit -->
+        <script src="innit.js"></script>
+
+        <!-- Jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+
+
+        <div style="text-align: center;"><h1 class="text">Who is the funniest?</h1></div>
+
+        <div style="text-align: center;">
+            <button id="btn1" class="cool" onClick = "onClickOne()">-</button>
+            <button id="btn2" class="cool" onClick = "onClickTwo()">-</button>
+            <button id="btn3" class="cool" onClick = "onClickThree()">-</button>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="cool" onClick="refresh()">Refresh</button>
+            <button class="cool"> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Check Polls</a> </button> 
+        </div>
+
+        
+        <script>
+        var database = firebase.database();
+        var newData;
+        
+        var names = [];
+        var btn1 = document.getElementById('btn1');
+        var btn2 = document.getElementById('btn2');
+        var btn3 = document.getElementById('btn3');
+        var buttons = [btn1, btn2, btn3];
+        //console.log(buttons);
+
+        function addName(name){
+            console.log("name", name);
+            var v = database.ref('poll').once('value').then(function(snapshot) {
+                console.log(name, names);
+                newData = snapshot.val() + "," + name;
+                //console.log(newData);
+                database.ref().child("poll").set(newData);
+            });
+            refresh();
+        }
+
+
+         function onClickOne(){
+            refresh();
+            var v = database.ref('poll').once('value').then(function(snapshot) {
+                newData = snapshot.val() + "," + btn1.innerText;
+                console.log(btn1.innerText);
+                database.ref().child("poll").set(newData);
+            });
+        }
+
+        function onClickTwo(){
+            refresh();
+            var v = database.ref('poll').once('value').then(function(snapshot) {
+                newData = snapshot.val() + "," + btn2.innerText;
+                console.log(btn2.innerText);
+                database.ref().child("poll").set(newData);
+            });
+        }
+
+        function onClickThree(){
+            refresh();
+            var v = database.ref('poll').once('value').then(function(snapshot) {
+                newData = snapshot.val() + "," + btn3.innerText;
+                console.log(btn3.innerText);
+                database.ref().child("poll").set(newData);
+            });
+        }
+
+
+        function refresh() {
+            var btns = ["btn1", "btn2", "btn3"];
+            var a = database.ref('poll').once('value').then(function(snapshot) {
+                //console.log(snapshot.val(), snapshot.val().split(","),snapshot.val().split(",").sort());
+                var list = snapshot.val().split(",").sort();
+                //console.log(list);
+
+                var nameCounter = {};
+                var i;
+                for (i = 0; i < list.length; i++) {
+                    //console.log(list[i]);
+                    if (nameCounter[list[i]] >= 1){
+                        nameCounter[list[i]] += 1;
+                    }
+                    else{
+                        nameCounter[list[i]] = 1;
+                    }
+                    //console.log(nameCounter[list[i]])
+                }
+                //console.log(nameCounter);
+                //console.log(Object.keys(nameCounter));
+                //console.log(btns);
+                names = []
+                var holder = nameCounter;
+                for (i = 0; i < btns.length; i++) {
+                    var num = Math.floor((Math.random() * Object.keys(holder).length-1)+1)
+                    var crntname = Object.keys(holder)[num];
+                    names.push(crntname);
+                    //console.log(crntname, num, i);
+                    delete holder[crntname];
+                }
+
+                for (i = 0; i < btns.length; i++) {
+                    var crntbtn = document.getElementById(btns[i]);
+                    crntbtn.innerText = names[i];
+                    //$('#'+btns[i]).unbind();
+                    //$('#'+btns[i]).click(function() { addName(names[i]); });
+                    //console.log(i, crntbtn.innerText);
+                }
+    
+            });
+        }
+
+        </script>
+
+    </body>
+</html>
